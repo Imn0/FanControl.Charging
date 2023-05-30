@@ -4,6 +4,18 @@ namespace Battery_Plugin;
 
 public class BatterySensor : IPluginSensor
 {
+    internal string Type { get; }
+
+    internal int Index { get; set; }
+
+    public string Name { get; }
+
+    public float? Value { get; internal set; }
+
+    public string Id { get; }
+
+    public void Update() { }
+
     internal BatterySensor(int index, string type, string id, string name)
     {
         Index = index;
@@ -14,8 +26,6 @@ public class BatterySensor : IPluginSensor
 
     static public float get_status()
     {
-       // var AC_status = SystemInformation.PowerStatus.PowerLineStatus;
-        //Console.Write(AC_status);
         var Charging_status = SystemInformation.PowerStatus.BatteryChargeStatus & BatteryChargeStatus.Charging;
         if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online && Charging_status == BatteryChargeStatus.Charging)
         {
@@ -27,25 +37,13 @@ public class BatterySensor : IPluginSensor
         }
         return 0f;
     }
+
     static public BatterySensor[] GetBatterySensors()
     {
         var list = new List<BatterySensor>();
-        var _sensor = new BatterySensor(1, "Temperature", "bat_Temperature", "ac status");
+        var sensor = new BatterySensor(1, "Temperature", "bat_Temperature", "ac status");
 
-        
-
-        list.Add(_sensor);
+        list.Add(sensor);
         return list.ToArray();
-
     }
-    internal string Type { get; }
-    internal int Index { get; set; }
-    public string Name { get; }
-
-    public float? Value { get; internal set; }
-
-    public string Id { get; }
-
-    public void Update() { }
-
 };

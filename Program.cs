@@ -7,22 +7,23 @@ namespace Battery_Plugin;
 
 public class Battery_plugin : IPlugin2
 {
-    private BatterySensor[] _sensor = Array.Empty<BatterySensor>();
     public string Name => "AC status";
-
+    
+    private BatterySensor[] sensors = Array.Empty<BatterySensor>();
+    
     public void Initialize()
     {
     }
 
     public void Close()
     {
-        _sensor = Array.Empty<BatterySensor>();
+        sensors = Array.Empty<BatterySensor>();
     }
 
     public void Load(IPluginSensorsContainer container)
     {
-        _sensor = BatterySensor.GetBatterySensors();
-        foreach (var sensor in _sensor)
+        sensors = BatterySensor.GetBatterySensors();
+        foreach (var sensor in sensors)
         {
             sensor.Value = BatterySensor.get_status();
             container.TempSensors.Add(sensor);
@@ -32,7 +33,7 @@ public class Battery_plugin : IPlugin2
 
     public void Update()
     {
-        foreach (var sensor in _sensor)
+        foreach (var sensor in sensors)
         {
             sensor.Value = BatterySensor.get_status();
         }
